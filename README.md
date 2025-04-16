@@ -26,7 +26,7 @@ npm run dev
 
 ####  Copy Files from Host to Ollama Container
 
-docker compose cp /usr/local/share/ca-certificates/*  ollama:/usr/local/share/ca-certificates/
+    docker compose cp /usr/local/share/ca-certificates/*  ollama:/usr/local/share/ca-certificates/
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the WebUI.
 
