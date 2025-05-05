@@ -41,15 +41,15 @@ This is a sample, but, find and back up your Models Data in your Docker Volumes
                 "Source": "/mnt/scratch/docker/volumes/ollama/_data",
             "Volumes": null,
 
-Copy Models:
+#### Copy Models:
 
     $ sudo bash
     $ cd /mnt/scratch
     $ cp -al docker/volumes/ollama/_data ollama_backup
 
-Remove your Container:
+#### Remove your Container:
 
     sudo docker rm ollama
 
-Re-run Docker Compose to pull the latest image
+#### Re-run Docker Compose to pull the latest image
 
