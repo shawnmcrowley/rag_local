@@ -51,6 +51,10 @@ This is a sample, but, find and back up your Models Data in your Docker Volumes
 
     sudo docker rm ollama
 
+#### Re-run Docker Compose to pull the latest image
+
+    docker-compose up -d
+
 #### List Your Local Models and Remove Models
 
     > ollama list
@@ -68,6 +72,6 @@ This is a sample, but, find and back up your Models Data in your Docker Volumes
     
 
 
-#### Re-run Docker Compose to pull the latest image
+
 
     
