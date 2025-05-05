@@ -28,6 +28,8 @@ npm run dev
 
     docker compose cp /usr/local/share/ca-certificates/*  ollama:/usr/local/share/ca-certificates/
 
+#### Connect to Web UI to validate models and Test
+
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the WebUI.
 
 #### Updating to the Latest Ollama Version
