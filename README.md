@@ -53,7 +53,7 @@ This is a sample, but, find and back up your Models Data in your Docker Volumes
 
 #### List Your Local Models and Remove Models
 
-> ollama list
+    > ollama list
     NAME                           	ID          	SIZE  	MODIFIED     
     codegemma:7b-code-fp16         	211627025485	17 GB 	2 days ago  	
     codegemma:7b-instruct-fp16     	27f776c137a0	17 GB 	2 days ago  	
