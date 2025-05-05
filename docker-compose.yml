@@ -5,7 +5,7 @@ services:
       - "11434:11434"
     volumes:
       - ollama-data:/root/.ollama
-    network_mode: "host"
+    #network_mode: "host"
   ollama-webui:
     image: ghcr.io/open-webui/open-webui:main
     ports:
@@ -16,7 +16,7 @@ services:
       - ollama-webui-data:/app/backend/data
     depends_on:
       - ollama
-    network_mode: "host"
+    #network_mode: "host"
 
 volumes:
   ollama-data:

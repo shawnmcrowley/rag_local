@@ -30,13 +30,26 @@ npm run dev
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the WebUI.
 
-## Learn More
+### Updating to the Latest Ollama Version
 
-To learn more about Next.js, take a look at the following resources:
+This is a sample, but, find and back up your Models Data in your Docker Volumes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    $ sudo docker inspect ollama | grep -i volume
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+                "Type": "volume",
+                "Source": "/mnt/scratch/docker/volumes/ollama/_data",
+            "Volumes": null,
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Copy Models:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    $ sudo bash
+    $ cd /mnt/scratch
+    $ cp -al docker/volumes/ollama/_data ollama_backup
+
+Remove your Container:
+
+    sudo docker rm ollama
+
+Re-run Docker Compose to pull the latest image
+
