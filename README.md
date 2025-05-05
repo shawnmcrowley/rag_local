@@ -30,7 +30,7 @@ npm run dev
 
 Open [http://localhost:8080](http://localhost:8080) with your browser to see the WebUI.
 
-### Updating to the Latest Ollama Version
+#### Updating to the Latest Ollama Version
 
 This is a sample, but, find and back up your Models Data in your Docker Volumes
 
