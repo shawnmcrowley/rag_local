@@ -38,12 +38,12 @@ Run this command to list the root certs currently installed on your machine.
 
 Download Zscaler’s root cert in der format and convert it to pem (but make sure the extension is .crt. Otherwise it won’t work)
 
-    Copy the crt file (in my case, I named it Zscaler.crt) to /usr/local/share/ca-certificates
+    cp <file>.crt /usr/local/share/ca-certificates
 
 Run this commad again
 
     sudo update-ca-certificates --fresh
-    
+
 It will read the crt file and add it to the available root cert store on your linux machine.
 Try docker pull hello-world again.
 
