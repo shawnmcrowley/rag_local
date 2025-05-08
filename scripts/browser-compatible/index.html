@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Processor Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input, button {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .status.info {
+      background-color: #e7f3fe;
+      border-left: 6px solid #2196F3;
+    }
+    .status.success {
+      background-color: #ddffdd;
+      border-left: 6px solid #4CAF50;
+    }
+    .status.error {
+      background-color: #ffdddd;
+      border-left: 6px solid #f44336;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .hidden {
+      display: none;
+    }
+    progress {
+      width: 100%;
+      height: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>PDF Processor Demo</h1>
+      <p>This demo processes PDF documents, extracts text, chunks it, and generates embeddings using the local Ollama snowflake-artic-embed2 model.</p>
+    </div>
+
+    <div class="card">
+      <h2>Upload PDF</h2>
+      <div class="form-group">
+        <label for="pdfFile">Select PDF file:</label>
+        <input type="file" id="pdfFile" accept=".pdf" />
+      </div>
+      
+      <div class="form-group">
+        <label for="chunkSize">Chunk Size (characters):</label>
+        <input type="number" id="chunkSize" value="1000" min="100" />
+      </div>
+      
+      <div class="form-group">
+        <label for="overlap">Chunk Overlap (characters):</label>
+        <input type="number" id="overlap" value="200" min="0" />
+      </div>
+      
+      <div class="form-group">
+        <label for="modelName">Embedding Model:</label>
+        <input type="text" id="modelName" value="snowflake-artic-embed2" />
+      </div>
+      
+      <button id="processBtn">Process PDF</button>
+      
+      <div id="progressContainer" class="form-group hidden">
+        <label>Processing:</label>
+        <progress id="progressBar" value="0" max="100"></progress>
+        <div id="progressStatus" class="status info">Initializing...</div>
+      </div>
+    </div>
+    
+    <div id="resultsCard" class="card hidden">
+      <h2>Results</h2>
+      <div class="form-group">
+        <button id="downloadBtn">Download JSON</button>
+      </div>
+      <pre id="resultPreview"></pre>
+    </div>
+  </div>
+
+  <!-- Load PDF.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+  <script>
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js';
+  </script>
+  
+  <!-- Load our PDF processor -->
+  <script type="module">
+    import PdfProcessor from './pdf-processor.js';
+    
+    // DOM elements
+    const pdfFileInput = document.getElementById('pdfFile');
+    const chunkSizeInput = document.getElementById('chunkSize');
+    const overlapInput = document.getElementById('overlap');
+    const modelNameInput = document.getElementById('modelName');
+    const processBtn = document.getElementById('processBtn');
+    const progressContainer = document.getElementById('progressContainer');
+    const progressBar = document.getElementById('progressBar');
+    const progressStatus = document.getElementById('progressStatus');
+    const resultsCard = document.getElementById('resultsCard');
+    const resultPreview = document.getElementById('resultPreview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    
+    let processedData = null;
+    
+    // Process button click handler
+    processBtn.addEventListener('click', async () => {
+      const pdfFile = pdfFileInput.files[0];
+      if (!pdfFile) {
+        alert('Please select a PDF file');
+        return;
+      }
+      
+      const options = {
+        chunkSize: parseInt(chunkSizeInput.value) || 1000,
+        chunkOverlap: parseInt(overlapInput.value) || 200,
+        modelName: modelNameInput.value || 'snowflake-artic-embed2',
+        ollamaApiUrl: 'http://localhost:11434/api/embeddings'
+      };
+      
+      // Show progress
+      processBtn.disabled = true;
+      progressContainer.classList.remove('hidden');
+      progressBar.value = 10;
+      progressStatus.textContent = 'Extracting text from PDF...';
+      progressStatus.className = 'status info';
+      
+      try {
+        // Create processor
+        const processor = new PdfProcessor(options);
+        
+        // Process PDF
+        progressBar.value = 20;
+        progressStatus.textContent = 'Processing PDF...';
+        
+        // Add event listeners for progress updates
+        const originalFetch = window.fetch;
+        let chunkCount = 0;
+        let processedChunks = 0;
+        
+        // Override fetch to track progress
+        window.fetch = async (...args) => {
+          const [url, options] = args;
+          if (url === 'http://localhost:11434/api/embeddings') {
+            processedChunks++;
+            const progress = 20 + Math.min(70, (processedChunks / chunkCount) * 70);
+            progressBar.value = progress;
+            progressStatus.textContent = `Generating embeddings: ${processedChunks}/${chunkCount}`;
+          }
+          return originalFetch(...args);
+        };
+        
+        // Extract text and create chunks first
+        const pdfData = await processor.extractTextFromPdf(pdfFile);
+        const chunks = processor.createChunks(pdfData.text);
+        chunkCount = chunks.length;
+        
+        progressBar.value = 20;
+        progressStatus.textContent = `Generating embeddings for ${chunks.length} chunks...`;
+        
+        // Process the PDF
+        processedData = await processor.processPdf(pdfFile);
+        
+        // Restore original fetch
+        window.fetch = originalFetch;
+        
+        // Show results
+        progressBar.value = 100;
+        progressStatus.textContent = 'Processing complete!';
+        progressStatus.className = 'status success';
+        
+        // Display preview
+        resultsCard.classList.remove('hidden');
+        resultPreview.textContent = JSON.stringify(processedData, null, 2).substring(0, 1000) + '...';
+        
+      } catch (error) {
+        console.error('Error processing PDF:', error);
+        progressStatus.textContent = `Error: ${error.message}`;
+        progressStatus.className = 'status error';
+      } finally {
+        processBtn.disabled = false;
+      }
+    });
+    
+    // Download button click handler
+    downloadBtn.addEventListener('click', () => {
+      if (!processedData) return;
+      
+      const filename = processedData.metadata.filename.replace('.pdf', '.json');
+      const jsonString = JSON.stringify(processedData, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "source": "public/documents/rag_architecture.pdf",
+    "title": "rag_architecture",
+    "totalPages": 26,
+    "processedAt": "2025-05-08T13:20:59.642Z",
+    "model": "llama3.2",
+    "chunkSize": 1000,
+    "chunkOverlap": 200
+  },
+  "chunks": [
+    {
+      "text": "This PDF document has 26 pages. The text content cannot be directly extracted in this Node.js environment due to dependency issues. When you move this code to the browser environment, you can use the browser-compatible version in the 'browser-compatible' directory, which uses PDF.js for proper text extraction. For now, we'll generate embeddings for this placeholder text to demonstrate the workflow.",
+      "index": 0,
+      "start": 0,
+      "end": 401
+    },
+    {
+      "text": "rowser-compatible version in the 'browser-compatible' directory, which uses PDF.js for proper text extraction. For now, we'll generate embeddings for this placeholder text to demonstrate the workflow.",
+      "index": 1,
+      "start": 201,
+      "end": 401
+    }
+  ]
+}
