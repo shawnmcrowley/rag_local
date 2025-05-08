@@ -8,22 +8,17 @@
  * The output is saved as a JSON file containing chunks and their embeddings.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import { program } from 'commander';
-import fetch from 'node-fetch';
-import { PDFDocument } from 'pdf-lib';
+const fs = require('fs');
+const path = require('path');
+const { program } = require('commander');
+const fetch = require('node-fetch');
+const { PDFDocument } = require('pdf-lib');
 
 // Configuration
-const OLLAMA_API_URL = 'http://172.24.61.204:11434/api/embed';
-const MODEL_NAME = 'llama3.2';
+const OLLAMA_API_URL = 'http://localhost:11434/api/embeddings';
+const MODEL_NAME = 'snowflake-artic-embed2';
 const DEFAULT_CHUNK_SIZE = 1000;
 const DEFAULT_CHUNK_OVERLAP = 200;
-
-// Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Parse command line arguments
 program
