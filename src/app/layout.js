@@ -10,11 +10,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <link 
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Mono&display=swap" 
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono&display=swap" 
           rel="stylesheet" 
         />
       </head>
-      <body className="font-sans bg-gray-100">
+      <body className="bg-gray-50">
         {children}
       </body>
     </html>

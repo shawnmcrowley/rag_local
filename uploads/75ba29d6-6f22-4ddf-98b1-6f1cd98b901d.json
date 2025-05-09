@@ -1,0 +1,29 @@
+{
+  "metadata": {
+    "fileName": "rag_architecture.pdf",
+    "fileSize": 4634051,
+    "totalPages": 1,
+    "processedAt": "2025-05-09T19:56:28.017Z",
+    "model": "snowflake-artic-embed2",
+    "chunkSize": 1000,
+    "chunkOverlap": 200
+  },
+  "chunks": [
+    {
+      "text": "This PDF document could not be processed properly. \n      PDF text extraction requires either PDF.js to work correctly in Node.js \n      or the pdftotext utility to be installed on the server.\n      \n      Please install poppler-utils package on your server for better PDF text extraction.",
+      "index": 0,
+      "start": 0,
+      "end": 289,
+      "embedding": null,
+      "error": "HTTP error! Status: 404"
+    },
+    {
+      "text": "ther PDF.js to work correctly in Node.js \n      or the pdftotext utility to be installed on the server.\n      \n      Please install poppler-utils package on your server for better PDF text extraction.",
+      "index": 1,
+      "start": 89,
+      "end": 289,
+      "embedding": null,
+      "error": "HTTP error! Status: 404"
+    }
+  ]
+}

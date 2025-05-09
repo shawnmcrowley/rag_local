@@ -7,6 +7,15 @@ const nextConfig = {
       maxAssetSize: 50 * 1024 * 1024, // 50MB in bytes
       maxEntrypointSize: 50 * 1024 * 1024, // 50MB in bytes
     };
+    
+    // Add fallbacks for Node.js modules
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      path: require.resolve('path-browserify'),
+      stream: require.resolve('stream-browserify'),
+    };
+    
     return config;
   },
   experimental: {
