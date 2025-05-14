@@ -1,6 +1,6 @@
 # Local LLM Development with Regenerative AI
 
-This is a [Next.js](https://nextjs.org) Progressive Web Application (PWA) that provides a responsive form interface with Snowflake integration.
+This is a [Next.js](https://nextjs.org) That provides RAG Functionality with a Local Languarge Model using Vector Embeddings for Semantic Search
 
 ## Features
 
