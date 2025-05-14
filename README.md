@@ -1,4 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Local LLM Development with Regenerative AI
+
+This is a [Next.js](https://nextjs.org) Progressive Web Application (PWA) that provides a responsive form interface with Snowflake integration.
+
+## Features
+
+- Responsive form interface with drag-and-drop functionality
+- Snowflake Arctic Embeddings integration
+- Results visualization and metadata display
+- Docker-based deployment for Ollama and WebUI
+- Configurable settings for Snowflake integration
+
+## Project Structure
+
+```
+/
+├── public/             # Static assets and documents
+├── src/
+│   ├── app/            # Next.js app router components
+│   ├── components/     # Reusable UI components
+│   └── utils/          # Utility functions
+├── scripts/            # Helper scripts
+├── embeddings/         # Generated embeddings storage
+└── uploads/            # Uploaded file storage
+```
 
 ## Getting Started
 
@@ -12,8 +36,17 @@ Second, run the development server:
 
 ```bash
 npm run dev
-
 ```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+
+## Using the Application
+
+1. Upload files using drag-and-drop or file selector
+2. Configure settings (chunk size, overlap, model)
+3. Submit the form to process with Snowflake
+4. View results and metadata in the results table
+
 ## Docker Commands for Ollama
 
 ####  Access the Shell
@@ -36,7 +69,7 @@ Run this command to list the root certs currently installed on your machine.
 
     sudo update-ca-certificates --fresh 
 
-Download Zscaler’s root cert in der format and convert it to pem (but make sure the extension is .crt. Otherwise it won’t work)
+Download Zscaler's root cert in der format and convert it to pem (but make sure the extension is .crt. Otherwise it won't work)
 
     cp <file>.crt /usr/local/share/ca-certificates
 
@@ -94,9 +127,17 @@ This is a sample, but, find and back up your Models Data in your Docker Volumes
     deleted 'codellama'
     > ollama rm codellama:70b-code-q2_K 
     deleted 'codellama:70b-code-q2_K'
-    
 
+## Technologies Used
 
+- Next.js 15.3.0
+- React 19.0.0
+- TailwindCSS for styling
+- Snowflake Arctic Embeddings
+- Docker for containerization
 
+## Requirements
 
-    
+- Node.js 18+ 
+- Docker and Docker Compose
+- Ollama with the `snowflake-artic-embed2` model installed
